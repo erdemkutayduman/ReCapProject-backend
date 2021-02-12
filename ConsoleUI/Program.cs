@@ -17,59 +17,101 @@ namespace ConsoleUI
 
             Console.WriteLine("Brand Id 1 : ------------------------------------------------------------------------------------------------- " +
                 "\nId\tColor Name\tBrand Name\tModel Year\tDaily Price\tOrderDate\t\tDescription");
-            foreach (var car in carManager.GetCarsByBrandId(1))
+            var result1 = carManager.GetCarsByBrandId(1);
+
+            if (result1.Success == true)
             {
-                Console.WriteLine($"{car.CarId}" +
-                    $"\t{colorManager.GetById(car.ColorId).ColorName}" +
-                    $"\t\t{brandManager.GetById(car.BrandId).BrandName}" +
-                    $"\t\t{car.ModelYear}" +
-                    $"\t\t{car.DailyPrice}" +
-                    $"\t\t{orderManager.GetById(car.OrderId).OrderDate}" +
-                    $"\t{car.Description}");
+                foreach (var car in result1.Data)
+                {
+                    Console.WriteLine($"{car.CarId}" +
+                        $"\t{colorManager.GetById(car.ColorId).ColorName}" +
+                        $"\t\t{brandManager.GetById(car.BrandId).BrandName}" +
+                        $"\t\t{car.ModelYear}" +
+                        $"\t\t{car.DailyPrice}" +
+                        $"\t\t{orderManager.GetById(car.OrderId).OrderDate}" +
+                        $"\t{car.Description}");
+                }
             }
-            Console.WriteLine("-------------------------------------------------------------------------------------------------------------- ");
+            else
+            {
+                Console.WriteLine(result1.Message);
+
+            }
+                Console.WriteLine("-------------------------------------------------------------------------------------------------------------- ");
 
             Console.WriteLine("\n\nColor Id 3 : ------------------------------------------------------------------------------------------------- " +
                 "\nId\tColor Name\tBrand Name\tModel Year\tDaily Price\tOrderDate\t\tDescription");
-            foreach (var car in carManager.GetCarsByColorId(3))
+            var result2 = carManager.GetCarsByColorId(3);
+
+            if (result2.Success == true)
             {
-                Console.WriteLine($"{car.CarId}" +
-                $"\t{colorManager.GetById(car.ColorId).ColorName}" +
-                $"\t\t{brandManager.GetById(car.BrandId).BrandName}" +
-                $"\t\t{car.ModelYear}" +
-                $"\t\t{car.DailyPrice}" +
-                $"\t\t{orderManager.GetById(car.OrderId).OrderDate}" +
-                $"\t{car.Description}");
+                foreach (var car in result2.Data)
+                {
+                    Console.WriteLine($"{car.CarId}" +
+                        $"\t{colorManager.GetById(car.ColorId).ColorName}" +
+                        $"\t\t{brandManager.GetById(car.BrandId).BrandName}" +
+                        $"\t\t{car.ModelYear}" +
+                        $"\t\t{car.DailyPrice}" +
+                        $"\t\t{orderManager.GetById(car.OrderId).OrderDate}" +
+                        $"\t{car.Description}");
+                }
             }
-            Console.WriteLine("-------------------------------------------------------------------------------------------------------------- ");
+            else
+            {
+                Console.WriteLine(result2.Message);
+
+            }
+                Console.WriteLine("-------------------------------------------------------------------------------------------------------------- ");
 
             Console.WriteLine("\n\nOrder Id 2 : ------------------------------------------------------------------------------------------------- " +
                 "\nId\tColor Name\tBrand Name\tModel Year\tDaily Price\tOrderDate\t\tDescription");
-            foreach (var car in carManager.GetCarsByOrderId(2))
+            var result3 = carManager.GetCarsByOrderId(2);
+
+            if (result3.Success == true)
             {
-                Console.WriteLine($"{car.CarId}" +
-                    $"\t{colorManager.GetById(car.ColorId).ColorName}" +
-                    $"\t\t{brandManager.GetById(car.BrandId).BrandName}" +
-                    $"\t\t{car.ModelYear}" +
-                    $"\t\t{car.DailyPrice}" +
-                    $"\t\t{orderManager.GetById(car.OrderId).OrderDate}" +
-                    $"\t{car.Description}");
+                foreach (var car in result3.Data)
+                {
+                    Console.WriteLine($"{car.CarId}" +
+                        $"\t{colorManager.GetById(car.ColorId).ColorName}" +
+                        $"\t\t{brandManager.GetById(car.BrandId).BrandName}" +
+                        $"\t\t{car.ModelYear}" +
+                        $"\t\t{car.DailyPrice}" +
+                        $"\t\t{orderManager.GetById(car.OrderId).OrderDate}" +
+                        $"\t{car.Description}");
+                }
             }
-            Console.WriteLine("-------------------------------------------------------------------------------------------------------------- ");
+            else
+            {
+                Console.WriteLine(result3.Message);
+
+            }
+                Console.WriteLine("-------------------------------------------------------------------------------------------------------------- ");
 
             Console.WriteLine("\n\nDatabase All  : ---------------------------------------------------------------------------------------------- " +
                 "\nId\tColor Name\tBrand Name\tModel Year\tDaily Price\tOrderDate\t\tDescription");
-            foreach (var car in carManager.GetAll())
+            
+            var result4 = carManager.GetCarsDetail();
+
+            if (result4.Success == true)
             {
-                Console.WriteLine($"{car.CarId}" +
-                    $"\t{colorManager.GetById(car.ColorId).ColorName}" +
-                    $"\t\t{brandManager.GetById(car.BrandId).BrandName}" +
-                    $"\t\t{car.ModelYear}" +
-                    $"\t\t{car.DailyPrice}" +
-                    $"\t\t{orderManager.GetById(car.OrderId).OrderDate}" +
-                    $"\t{car.Description}");
+                foreach (var car in result4.Data)
+                {
+                    Console.WriteLine($"{car.CarId}" +
+                        $"\t{colorManager.GetById(car.ColorId).ColorName}" +
+                        $"\t\t{brandManager.GetById(car.BrandId).BrandName}" +
+                        $"\t\t{car.ModelYear}" +
+                        $"\t\t{car.DailyPrice}" +
+                        $"\t\t{orderManager.GetById(car.OrderId).OrderDate}" +
+                        $"\t{car.Description}");
+                }
             }
-            Console.WriteLine("-------------------------------------------------------------------------------------------------------------- ");
+            else
+            {
+                Console.WriteLine(result4.Message);
+
+            }
+
+                Console.WriteLine("-------------------------------------------------------------------------------------------------------------- ");
 
         }
     }
