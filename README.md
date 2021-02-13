@@ -1,2 +1,2 @@
-# ReCapProject - Rent A Car Project
+# Rent A Car Project
 Nitekli Yazılımcı Geliştirme Kampı
