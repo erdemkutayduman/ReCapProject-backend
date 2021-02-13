@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -16,48 +18,42 @@ namespace Business.Concrete
             _brandDal = brandDal;
         }
 
-        public void Add(Brand entity)
+        public IResult Add(Brand brand)
         {
-            if (entity.BrandName.Length > 2)
+            if (brand.BrandName.Length > 2)
             {
-                _brandDal.Add(entity);
-                Console.WriteLine("The brand is successfully added.");
+                _brandDal.Add(brand);
+                return new SuccessResult(Messages.BrandAdded);
             }
-            else
+            return new ErrorResult(Messages.BrandNameInvalid);
+        }
+
+        public IResult Delete(Brand brand)
+        {
+            _brandDal.Delete(brand);
+            return new SuccessResult(Messages.BrandDeleted);
+        }
+
+        public IResult Update(Brand brand)
+        {
+            if (brand.BrandName.Length > 2)
             {
-                Console.WriteLine($"Enter the length of the brand name more than 2 characters. The brand name you entered: {entity.BrandName}");
+                _brandDal.Update(brand);
+                return new SuccessResult(Messages.BrandUpdated);
             }
+            return new ErrorResult(Messages.BrandNameInvalid);
         }
 
-        public void Delete(Brand entity)
+        public IDataResult<Brand> GetById(int id)
         {
-            _brandDal.Delete(entity);
-            Console.WriteLine("The brand is successfully deleted.");
-
+            return new SuccessDataResult<Brand>(_brandDal.Get(p => p.BrandId == id));
         }
 
-        public List<Brand> GetAll()
+
+        public IDataResult<List<Brand>> GetAll()
         {
-            return _brandDal.GetAll();
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
         }
 
-        public Brand GetById(int id)
-        {
-            return _brandDal.Get(c => c.BrandId == id);
-        }
-
-        public void Update(Brand entity)
-        {
-            if (entity.BrandName.Length >= 2)
-            {
-                _brandDal.Update(entity);
-                Console.WriteLine("The brand is successfully updated.");
-            }
-            else
-            {
-                Console.WriteLine($"Enter the length of the brand name more than 2 characters. The brand name you entered: : {entity.BrandName}");
-            }
-
-        }
     }
 }

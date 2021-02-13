@@ -6,8 +6,9 @@ using System.Text;
 
 namespace Business.Abstract
 {
-    public interface IOrderService : IBaseService<Order>
+    public interface IUserService : IBaseService<User>
     {
         
+
     }
 }

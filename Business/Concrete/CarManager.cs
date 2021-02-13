@@ -6,6 +6,7 @@ using Entities.Concrete;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Business.Concrete
@@ -28,6 +29,13 @@ namespace Business.Concrete
 
             _carDal.Add(car);
             return new SuccessResult(Messages.CarAdded);
+        }
+
+        public IResult Delete(Car entity)
+        {
+            _carDal.Delete(entity);
+            return new SuccessDataResult<Car>(Messages.CarDeleted);
+
         }
 
         public IDataResult<List<Car>> GetAll()
@@ -60,11 +68,20 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.OrderId == orderid));
         }
 
-        public IDataResult<List<CarDetailDto>> GetCarsDetail()
+        public IDataResult<List<CarDetailDto>> GetCarsDetail(Expression<Func<Car, bool>> filter = null)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsDetail());
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsDetail(filter));
         }
 
-        
+        public IResult Update(Car entity)
+        {
+            if (entity.Description.Length < 2 && entity.DailyPrice < 0)
+            {
+                return new ErrorResult(Messages.CarNameInvalid);
+            }
+
+            _carDal.Add(entity);
+            return new SuccessResult(Messages.CarUpdated);
+        }
     }
 }

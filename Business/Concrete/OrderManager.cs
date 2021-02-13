@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -16,29 +18,46 @@ namespace Business.Concrete
             _orderDal = orderDal;
         }
 
-        public void Add(Order entity)
+        public IResult Add(Order entity)
         {
-            _orderDal.Add(entity);
+            if (entity.ShipCity.Length >= 2)
+            {
+                _orderDal.Add(entity);
+                return new SuccessDataResult<List<Order>>(Messages.OrderAdded);
+            }
+            else
+            {
+                return new ErrorDataResult<List<Order>>(Messages.InvalidOrder);
+            }
         }
 
-        public void Delete(Order entity)
+        public IResult Delete(Order entity)
         {
             _orderDal.Delete(entity);
+            return new SuccessDataResult<List<Order>>(Messages.OrderDeleted);
         }
 
-        public List<Order> GetAll()
+        public IDataResult<List<Order>> GetAll()
         {
-            return _orderDal.GetAll();
+            return new SuccessDataResult<List<Order>>(_orderDal.GetAll());
         }
 
-        public Order GetById(int id)
+        public IDataResult<Order> GetById(int id)
         {
-            return _orderDal.Get(p => p.OrderId == id);
+            return new SuccessDataResult<Order>(_orderDal.Get(c => c.OrderId == id));
         }
 
-        public void Update(Order entity)
+        public IResult Update(Order entity)
         {
-            _orderDal.Update(entity);
+            if (entity.ShipCity.Length >= 2)
+            {
+                _orderDal.Update(entity);
+                return new SuccessDataResult<List<Order>>(Messages.OrderUpdated);
+            }
+            else
+            {
+                return new ErrorDataResult<List<Order>>(Messages.InvalidOrder);
+            }
         }
     }
 }
