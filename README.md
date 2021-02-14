@@ -1,2 +1,2 @@
-# Rent A Car Project
+# Rent a Car Project
 Nitelikli Yazılımcı Geliştirme Kampı
