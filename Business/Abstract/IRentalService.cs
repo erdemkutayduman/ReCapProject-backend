@@ -10,8 +10,7 @@ namespace Business.Abstract
 {
     public interface IRentalService : IBaseService<Rental>
     {
-        IDataResult<List<RentalDetailDto>> GetRentalDetails(Expression<Func<Rental, bool>> filter = null);        
-        
+        IDataResult<List<RentalDetailDto>> GetRentalDetails(Expression<Func<Rental, bool>> filter = null);           
        
     }
 }

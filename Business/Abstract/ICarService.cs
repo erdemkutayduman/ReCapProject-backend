@@ -12,13 +12,9 @@ namespace Business.Abstract
     {
         
         IDataResult<List<Car>> GetCarsByBrandId(int brandId);
-        IDataResult<List<Car>> GetCarsByColorId (int colorId);
-        IDataResult<List<Car>> GetCarsByOrderId(int orderId);
-        
-        IDataResult<List<CarDetailDto>> GetCarsDetail(Expression<Func<Car, bool>> filter = null);
-        
-        
-        
+        IDataResult<List<Car>> GetCarsByColorId(int colorId);
+        IDataResult<List<Car>> GetCarsByOrderId(int orderId);        
+        IDataResult<List<CarDetailDto>> GetCarsDetail(Expression<Func<Car, bool>> filter = null);       
 
     }
 }
