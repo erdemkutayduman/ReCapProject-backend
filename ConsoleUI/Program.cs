@@ -14,7 +14,6 @@ namespace ConsoleUI
             CarManager carManager = new CarManager(new EfCarDal());
             BrandManager brandManager = new BrandManager(new EfBrandDal());
             ColorManager colorManager = new ColorManager(new EfColorDal());
-            OrderManager orderManager = new OrderManager(new EfOrderDal());
             UserManager userManager = new UserManager(new EfUserDal());
             CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
             RentalManager rentalManager = new RentalManager(new EfRentalDal());
@@ -194,7 +193,7 @@ namespace ConsoleUI
             Console.WriteLine("List of Customers : \nId\tKullanıcı Id\tCustomer Name");
             foreach (var customer in customerManager.GetAll().Data)
             {
-                Console.WriteLine($"{customer.CustomerId}\t{customer.UserId}\t{customer.CompanyName}");
+                Console.WriteLine($"{customer.CustomerId}\t{customer.UserId}\t{customer.CustomerName}");
             }
             Console.WriteLine("-------------------------------------------------------------------------------------------------------------- ");
         }
@@ -211,7 +210,7 @@ namespace ConsoleUI
             Customer addCustomer = new Customer
             {
                 UserId = addUserId,
-                CompanyName = addCustomerName
+                CustomerName = addCustomerName
             };
             customerManager.Add(addCustomer);
             Console.WriteLine("-------------------------------------------------------------------------------------------------------------- ");
