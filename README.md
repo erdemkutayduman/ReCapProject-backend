@@ -22,7 +22,7 @@ Qualified Software Developer Camp
 
 # Updates
 <b>Update 1</b>
--Entities, DataAccess, Business and Console layers were created.
+-Entities, DataAccess, Business and Console layers were created.<br>
 -A Car object was created and Id, BrandId, ColorId, ModelYear, DailyPrice, Description fields were added.
 GetById, GetAll, Add, Update, Delete operations were written in InMemory format.
 
