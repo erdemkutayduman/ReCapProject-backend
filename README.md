@@ -1,6 +1,4 @@
 # Rent a Car Project
-Nitelikli Yazılımcı Geliştirme Kampı
-# Rent a Car Project
 Qualified Software Developer Camp
 
 # Packages
