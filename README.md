@@ -28,7 +28,7 @@ GetById, GetAll, Add, Update, Delete operations were written in InMemory format.
 
 <b>Update 2</b>
 -Brand and Color objects are added, Id and Name properties are added to both objects.
--A new database was established on the SQL Server side, its name was determined as Recap???????????????????? and the tables of Cars, Brands, Colors were added.
+-A new database was established on the SQL Server side, its name was determined as RentalCars and the tables of Cars, Brands, Colors were added.
 -Generic IEntityRepository infrastructure was written to the system
 Entity Framework infrastructure was written for Car, Brand and Color objects.
 
