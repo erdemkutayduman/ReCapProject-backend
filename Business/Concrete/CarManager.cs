@@ -3,6 +3,7 @@ using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -10,6 +11,7 @@ using Entities.DTOs;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -17,17 +19,26 @@ namespace Business.Concrete
 {
     public class CarManager : ICarService
     {
-        private readonly ICarDal _carDal;
+        ICarDal _carDal;
+        
 
         public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
+            
         }
 
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            
+            IResult result = BusinessRules.Run(CheckIfCarIdExists(car.CarId));
+
+            if (result != null)
+            {
+                return result;
+            }
+
+
             _carDal.Add(car);
             return new SuccessResult(Messages.CarAdded);
         }
@@ -64,13 +75,22 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsDetail(filter));
         }
-
         
         public IResult Update(Car entity)
         {
             
             _carDal.Add(entity);
             return new SuccessResult(Messages.CarUpdated);
+        }
+
+        private IResult CheckIfCarIdExists(int carId)
+        {
+            var result = _carDal.GetAll(p => p.CarId == carId).Any();
+            if (result)
+            {
+                return new ErrorResult(Messages.CarNameInvalid);
+            }
+            return new SuccessResult();
         }
     }
 }

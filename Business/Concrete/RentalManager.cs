@@ -2,6 +2,7 @@
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -25,7 +26,12 @@ namespace Business.Concrete
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
-            
+
+            IResult results = BusinessRules.Run(CheckIfCarInUse(rental.CarId));
+            if (results != null)
+            {
+                return results;
+            }
             _rentalDal.Add(rental);
             return new SuccessResult(Messages.RentalAdded);
         }
@@ -51,7 +57,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(filter), Messages.RentalsListed);
         }
 
-        
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Update(Rental rental)
         {
             _rentalDal.Update(rental);
@@ -79,6 +85,43 @@ namespace Business.Concrete
             }
             updatedRental.ReturnDate = DateTime.Now;
             _rentalDal.Update(updatedRental);
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfCarInUse(int carId)
+        {
+            var result = _rentalDal.Get(p => p.CarId == carId && p.ReturnDate == null);
+            if (result != null)
+            {
+                return new ErrorResult(Messages.RentalBusy);
+            }
+            return new SuccessResult();
+
+        }
+
+        private IResult CheckIfDelete(int Id)
+        {
+            var result = _rentalDal.Get(p => p.Id == Id);
+            if (result == null)
+            {
+                return new ErrorResult(Messages.RentalRecordsInvalid);
+            }
+            if (result.ReturnDate == null)
+            {
+                return new ErrorResult(Messages.RentalBusy);
+            }
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfDeliver(int Id)
+        {
+            var result = _rentalDal.Get(p => p.Id == Id);
+            if (result.ReturnDate != null)
+            {
+                return new ErrorResult(Messages.RentalRecordsInvalid);
+            }
+            result.ReturnDate = DateTime.Now.Date;
+            Update(result);
             return new SuccessResult();
         }
     }
