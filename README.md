@@ -61,7 +61,6 @@ GetById, GetAll, Add, Update, Delete operations were written in InMemory format.
 
 <b>Update 8</b><br>
 -JWT Support Added to the project.<br>
--Microsoft.AspNetCore.Http support added to the project.<br>
 -Microsoft.AspNetCore.Http.Abstractions(2.2.0) support added to the project.<br>
 -System.IdentityModel.Tokens.Jwt(6.8.0) support added to the project.<br>
 -Microsoft.IdentityModel.Tokens(6.8.0) support added to the project.<br>
