@@ -6,7 +6,8 @@ Qualified Software Developer Camp
 -Autofac(6.1.0)<br>
 -Autofac.Extras.DynamicProxy(6.0.0)<br>
 -FluentValidation(9.5.1)<br>
--Microsoft.AspNetCore.Http<br>
+-Microsoft.AspNetCore.Http(2.2.2)<br>
+-Microsoft.AspNetCore.Http.Abstractions(2.2.0)<br>
 
 <b>Core</b><br>
 -Autofac(6.1.0)<br>
@@ -14,13 +15,16 @@ Qualified Software Developer Camp
 -Autofac.Extras.DynamicProxy(6.0.0)<br>
 -FluentValidation(9.5.1)<br>
 -Microsoft.EntityFrameworkCore.SqlServer(3.1.11)<br>
--Microsoft.AspNetCore.Http<br>
+-Microsoft.AspNetCore.Http(2.2.2)<br>
+-System.IdentityModel.Tokens.Jwt(6.8.0)<br>
+-Microsoft.IdentityModel.Tokens(6.8.0)<br>
 
 <b>DataAccess</b><br>
 -Microsoft.EntityFrameworkCore.SqlServer(3.1.11)<br>
 
 <b>WebAPI</b><br>
 -Autofac.Extensions.DependencyInjection(7.1.0)<br>
+-Microsoft.AspNetCore.Authentication.JwtBearer(3.1.12)<br>
 
 # Updates<br>
 <b>Update 1</b><br>
@@ -53,4 +57,11 @@ GetById, GetAll, Add, Update, Delete operations were written in InMemory format.
 
 <b>Update 7</b><br>
 -CarImage adding option through WebAPI has been attached to the project.<br>
--Microsoft.AspNetCore.Http support added to the project.
+-Microsoft.AspNetCore.Http(2.2.2) support added to the project.
+
+<b>Update 8</b><br>
+-JWT Support Added to the project.<br>
+-Microsoft.AspNetCore.Http.Abstractions(2.2.0) support added to the project.<br>
+-System.IdentityModel.Tokens.Jwt(6.8.0) support added to the project.<br>
+-Microsoft.IdentityModel.Tokens(6.8.0) support added to the project.<br>
+-Microsoft.AspNetCore.Authentication.JwtBearer(3.1.12) support added to the project.<br>
