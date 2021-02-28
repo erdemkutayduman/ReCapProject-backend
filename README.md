@@ -6,6 +6,7 @@ Qualified Software Developer Camp
 -Autofac(6.1.0)<br>
 -Autofac.Extras.DynamicProxy(6.0.0)<br>
 -FluentValidation(9.5.1)<br>
+-Microsoft.AspNetCore.Http<br>
 
 <b>Core</b><br>
 -Autofac(6.1.0)<br>
@@ -13,6 +14,7 @@ Qualified Software Developer Camp
 -Autofac.Extras.DynamicProxy(6.0.0)<br>
 -FluentValidation(9.5.1)<br>
 -Microsoft.EntityFrameworkCore.SqlServer(3.1.11)<br>
+-Microsoft.AspNetCore.Http<br>
 
 <b>DataAccess</b><br>
 -Microsoft.EntityFrameworkCore.SqlServer(3.1.11)<br>
@@ -30,7 +32,7 @@ GetById, GetAll, Add, Update, Delete operations were written in InMemory format.
 -Brand and Color objects are added, Id and Name properties are added to both objects.<br>
 -A new database was established on the SQL Server side, its name was determined as RentalCars and the tables of Cars, Brands, Colors were added.<br>
 -Generic IEntityRepository infrastructure was written to the system<br>
-Entity Framework infrastructure was written for Car, Brand and Color objects.<br>
+-Entity Framework infrastructure was written for Car, Brand and Color objects.<br>
 
 <b>Update 3</b><br>
 -Core layer has been created.<br>
@@ -43,8 +45,12 @@ Entity Framework infrastructure was written for Car, Brand and Color objects.<br
 -Rental table, which holds car rental information, has also been added to the system.<br>
 
 <b>Update 5</b><br>
-Web API layer has been created.<br>
+-Web API layer has been created.<br>
 
 <b>Update 6</b><br>
 -Autofac and FluentValidation support has been added to the project.<br>
 -AOP support added to the project.<br>
+
+<b>Update 7</b><br>
+-CarImage adding option through WebAPI has been attached to the project.<br>
+-Microsoft.AspNetCore.Http support added to the project.
