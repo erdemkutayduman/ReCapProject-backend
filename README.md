@@ -57,4 +57,12 @@ GetById, GetAll, Add, Update, Delete operations were written in InMemory format.
 
 <b>Update 7</b><br>
 -CarImage adding option through WebAPI has been attached to the project.<br>
--Microsoft.AspNetCore.Http support added to the project.
+-Microsoft.AspNetCore.Http(2.2.2) support added to the project.
+
+<b>Update 8</b><br>
+-JWT Support Added to the project.<br>
+-Microsoft.AspNetCore.Http support added to the project.<br>
+-Microsoft.AspNetCore.Http.Abstractions(2.2.0) support added to the project.<br>
+-System.IdentityModel.Tokens.Jwt(6.8.0) support added to the project.<br>
+-Microsoft.IdentityModel.Tokens(6.8.0) support added to the project.<br>
+-Microsoft.AspNetCore.Authentication.JwtBearer(3.1.12) support added to the project.<br>
