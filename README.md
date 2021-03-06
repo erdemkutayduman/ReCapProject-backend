@@ -65,3 +65,7 @@ GetById, GetAll, Add, Update, Delete operations were written in InMemory format.
 -System.IdentityModel.Tokens.Jwt(6.8.0) support added to the project.<br>
 -Microsoft.IdentityModel.Tokens(6.8.0) support added to the project.<br>
 -Microsoft.AspNetCore.Authentication.JwtBearer(3.1.12) support added to the project.<br>
+
+<b>Update 9</b><br>
+-Cache, Transaction and Performance support added to the project.<br>
+
