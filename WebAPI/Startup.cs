@@ -1,5 +1,7 @@
 using Business.Abstract;
 using Business.Concrete;
+using Core.DependencyResolvers;
+using Core.Extensions;
 using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
@@ -53,11 +55,12 @@ namespace WebAPI
                     };
                 });
 
-            ServiceTool.Create(services);
-            
+            services.AddDependencyResolvers(new ICoreModule[] {
+                new CoreModule()
+            });
+    
             //services.AddSingleton<IBrandService, BrandManager>();
             //services.AddSingleton<IBrandDal, EfBrandDal>();
-          
 
         }
 
