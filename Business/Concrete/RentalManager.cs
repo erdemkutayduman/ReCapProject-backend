@@ -31,7 +31,11 @@ namespace Business.Concrete
         public IResult Add(Rental rental)
         {
 
-            IResult results = BusinessRules.Run(CheckIfCarInUse(rental.CarId));
+            IResult results = BusinessRules.Run(CheckIfCarInUse(rental.CarId),
+                                                CheckIfCarReturned(rental.CarId),
+                                                CheckIfDelete(rental.CarId),
+                                                CheckIfDeliver(rental.CarId));
+
             if (results != null)
             {
                 return results;
@@ -132,6 +136,21 @@ namespace Business.Concrete
             result.ReturnDate = DateTime.Now.Date;
             Update(result);
             return new SuccessResult();
+        }
+
+        public IResult CheckIfCarReturned(int carId)
+        {
+            var resultList = _rentalDal.GetAll(r => r.CarId == carId).ToList();
+            if (resultList.Count == 0)
+            {
+                return new SuccessResult();
+            }
+            var result = resultList.Last().ReturnDate != null ? true : false;
+            if (result)
+            {
+                return new SuccessResult();
+            }
+            return new ErrorResult(Messages.RentalBusy);
         }
     }
 }

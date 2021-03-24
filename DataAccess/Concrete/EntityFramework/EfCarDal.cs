@@ -11,29 +11,33 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfCarDal : EfEntityRepositoryBase<Car, EfContext>, ICarDal
     {
-        public List<CarDetailDto> GetCarsDetail(Expression<Func<Car, bool>> filter = null)
+        public List<CarDetailDto> GetCarDetails(Expression<Func<Car, bool>> filter = null)
         {
             using (EfContext context = new EfContext())
             {
-                var result = from v in filter == null ? context.Cars : context.Cars.Where(filter)
-                             join c in context.Colors
-                             on v.ColorId equals c.ColorId
-                             join b in context.Brands
-                             on v.BrandId equals b.BrandId
-                             join i in context.CarImages
-                             on v.CarId equals i.Id
+                var result = from c in filter == null ? context.Cars : context.Cars.Where(filter)
+                             join b in context.Brands on c.BrandId equals b.BrandId
+                             join clr in context.Colors on c.ColorId equals clr.ColorId
                              select new CarDetailDto
                              {
-                                 CarId = v.CarId,
-                                 ColorId = c.ColorId,
-                                 BrandId = b.BrandId,
+                                 CarId = c.CarId,
+                                 CarName = c.CarName,
                                  BrandName = b.BrandName,
-                                 ColorName = c.ColorName,
-                                 DailyPrice = v.DailyPrice,
-                                 Description = v.Description,
-                                 ModelYear = v.ModelYear,
-                                 
+                                 ColorName = clr.ColorName,
+                                 DailyPrice = c.DailyPrice,
+                                 ModelYear = c.ModelYear,
+                                 Description = c.Description,
+                                 ImagePaths = (from img in context.CarImages
+                                               where img.CarId == c.CarId
+                                               select new CarImage
+                                               {
+                                                   CarImageId = img.CarImageId,
+                                                   CarId = img.CarId,
+                                                   ImagePath = img.ImagePath,
+                                                   ImageDate = img.ImageDate
+                                               }).ToList()
                              };
+
                 return result.ToList();
             }
         }

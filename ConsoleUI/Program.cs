@@ -160,7 +160,7 @@ namespace ConsoleUI
             };
             Console.WriteLine(rentalManager.Add(addRental).Message);
             Console.WriteLine("-------------------------------------------------------------------------------------------------------------- ");
-
+            
         }
 
         private static void UserAddition(UserManager userManager)
@@ -234,7 +234,7 @@ namespace ConsoleUI
             Console.WriteLine("What's the model year of the car?");
             string modelYearForCarList = Console.ReadLine();
             Console.WriteLine($"\n\nColor Id'si {modelYearForCarList} olan arabalar: \nId\tColor Name\tBrand Name\tModel Year\tDaily Price\tDescriptions");
-            foreach (var car in carManager.GetCarsDetail(I => I.ModelYear == modelYearForCarList).Data)
+            foreach (var car in carManager.GetCarDetails(I => I.ModelYear == modelYearForCarList).Data)
             {
                 Console.WriteLine($"{car.CarId}\t{car.ColorName}\t\t{car.BrandName}\t\t{car.ModelYear}\t\t{car.DailyPrice}\t\t{car.Description}");
             }
@@ -248,7 +248,7 @@ namespace ConsoleUI
 
             Console.WriteLine("-------------------------------------------------------------------------------------------------------------- ");
             Console.WriteLine($"\n\nDaily Price of Cars {min} with {max}: \nId\tColor Name\tBrand Name\tModel Year\tDaily Price\tDescriptions");
-            foreach (var car in carManager.GetCarsDetail(I => I.DailyPrice >= min & I.DailyPrice <= max).Data)
+            foreach (var car in carManager.GetCarDetails(I => I.DailyPrice >= min & I.DailyPrice <= max).Data)
             {
                 Console.WriteLine($"{car.CarId}\t{car.ColorName}\t\t{car.BrandName}\t\t{car.ModelYear}\t\t{car.DailyPrice}\t\t{car.Description}");
             }
@@ -272,7 +272,7 @@ namespace ConsoleUI
             Console.WriteLine("What's the Color Id that you would like to see?");
             int colorIdForCarList = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine($"\n\n Color Id of Cars {colorIdForCarList}: \nId\tColor Name\tBrand Name\tModel Year\tDaily Price\tDescriptions");
-            foreach (var car in carManager.GetCarsDetail(I => I.ColorId == colorIdForCarList).Data)
+            foreach (var car in carManager.GetCarDetails(I => I.ColorId == colorIdForCarList).Data)
             {
                 Console.WriteLine($"{car.CarId}\t{car.ColorName}\t\t{car.BrandName}\t\t{car.ModelYear}\t\t{car.DailyPrice}\t\t{car.Description}");
             }
@@ -285,7 +285,7 @@ namespace ConsoleUI
             Console.WriteLine("What's the Brand Id that you would like to see?");
             int brandIdForCarList = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine($"\n\n Brand Id of Cars {brandIdForCarList} : \nId\tColor Name\tBrand Name\tModel Year\tDaily Price\tDescriptions");
-            foreach (var car in carManager.GetCarsDetail(I => I.BrandId == brandIdForCarList).Data)
+            foreach (var car in carManager.GetCarDetails(I => I.BrandId == brandIdForCarList).Data)
             {
                 Console.WriteLine($"{car.CarId}\t{car.ColorName}\t\t{car.BrandName}\t\t{car.ModelYear}\t\t{car.DailyPrice}\t\t{car.Description}");
             }
@@ -360,7 +360,7 @@ namespace ConsoleUI
         {
             Console.WriteLine("-------------------------------------------------------------------------------------------------------------- ");
             Console.WriteLine("Detailed List Of Cars :  \nId\tColor Name\tBrand Name\tModel Year\tDaily Price\tDescriptions");
-            foreach (var car in carManager.GetCarsDetail().Data)
+            foreach (var car in carManager.GetCarDetails().Data)
             {
                 Console.WriteLine($"{car.CarId}\t{car.ColorName}\t\t{car.BrandName}\t\t{car.ModelYear}\t\t{car.DailyPrice}\t\t{car.Description}");
             }

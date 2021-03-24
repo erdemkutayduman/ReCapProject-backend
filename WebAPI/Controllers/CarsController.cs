@@ -23,12 +23,72 @@ namespace WebAPI.Controllers
         public IActionResult GetAll()
         {
             var result = _carService.GetAll();
-            if(result.Success)
+            if (result.Success)
             {
                 return Ok(result);
             }
             return BadRequest(result);
         }
+
+        [HttpGet("getcardetails")]
+        public IActionResult GetCarDetails()
+        {
+            var result = _carService.GetCarDetails();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getcardetailsbycar")]
+        public IActionResult GetCarDetails(int carId)
+        {
+            var result = _carService.GetCarDetailsByCar(carId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getcarsbybrand")]
+        public IActionResult GetAllByBrandId(int brandId)
+        {
+            var result = _carService.GetCarDetailsByBrand(brandId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getcarsbycolor")]
+        public IActionResult GetAllByColorId(int colorId)
+        {
+            var result = _carService.GetCarDetailsByColor(colorId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getcarsbyfilter")]
+        public IActionResult GetCarDetailsByFilter(int brandId, int colorId)
+        {
+            var result = _carService.GetCarDetailsByFilter(brandId, colorId);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
 
         [HttpGet("getbyid")]
         public IActionResult GetById(int id)

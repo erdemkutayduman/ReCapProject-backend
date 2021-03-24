@@ -29,7 +29,7 @@ namespace Business.Concrete
             return _userDal.GetClaims(user);
         }
 
-        [CacheAspect]
+        //[CacheAspect]
         [PerformanceAspect(5)]
         public User GetByMail(string email)
         {
@@ -48,14 +48,12 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id));
         }
 
-        [SecuredOperation("user.add, admin")]
-        [ValidationAspect(typeof(UserValidator))]
-        [CacheRemoveAspect("IUserService.Get")]
-        IResult IBaseService<User>.Add(User entity)
-        {
-            _userDal.Add(entity);
-            return new SuccessResult(Messages.UserAdded);
-        }
+        ////[ValidationAspect(typeof(UserValidator))]
+        //public IResult IBaseService<User> Add(User entity)
+        //{
+        //    _userDal.Add(entity);
+        //    return new SuccessResult(Messages.UserAdded);
+        //}
 
         public IResult Delete(User entity)
         {
@@ -67,6 +65,12 @@ namespace Business.Concrete
         {
             _userDal.Update(entity);
             return new SuccessResult(Messages.UserUpdated);
+        }
+
+        public IResult Add(User entity)
+        {
+            _userDal.Add(entity);
+            return new SuccessResult(Messages.UserAdded);
         }
     }
 }

@@ -10,12 +10,16 @@ namespace Business.Abstract
 {
     public interface ICarService : IBaseService<Car>
     {
-        
-        IDataResult<List<Car>> GetCarsByBrandId(int brandId);
-        IDataResult<List<Car>> GetCarsByColorId(int colorId);
-        IDataResult<List<CarDetailDto>> GetCarsDetail(Expression<Func<Car, bool>> filter = null);
+        IDataResult<List<Car>> GetAllByColor(int id);
+        IDataResult<List<Car>> GetAllByBrand(int id);        
+        IDataResult<List<Car>> GetCarsByBrand(int brandId);
+        IDataResult<List<Car>> GetCarsByColor(int colorId);
+        IDataResult<List<CarDetailDto>> GetCarDetails(Expression<Func<Car, bool>> filter = null);
+        IDataResult<List<CarDetailDto>> GetCarDetailsByCar(int id);
+        IDataResult<List<CarDetailDto>> GetCarDetailsByBrand(int id);
+        IDataResult<List<CarDetailDto>> GetCarDetailsByColor(int id);
+        IDataResult<List<CarDetailDto>> GetCarDetailsByFilter(int brandId, int colorId);
         IResult AddTransactionalTest(Car car);
-
-
+        
     }
 }
