@@ -35,10 +35,10 @@ CREATE TABLE [dbo].[CarImages] (
 CREATE TABLE [dbo].[CreditCards] (
     [CreditCardId]   INT           IDENTITY (1, 1) NOT NULL,
     [CustomerId]     INT           NOT NULL,
-    [NameSurname]    VARCHAR (255) NOT NULL,
-    [CardNo]         VARCHAR (255) NOT NULL,
-    [ExpirationDate] VARCHAR (255) NOT NULL,
-    [Cvc]            VARCHAR (255) NOT NULL,
+    [NameSurname]    VARCHAR (250) NOT NULL,
+    [CardNo]         VARCHAR (250) NOT NULL,
+    [ExpirationDate] VARCHAR (250) NOT NULL,
+    [Cvc]            VARCHAR (250) NOT NULL,
     CONSTRAINT [PK_CreditCards] PRIMARY KEY CLUSTERED ([CreditCardId] ASC),
     FOREIGN KEY ([CustomerId]) REFERENCES [dbo].[Customers] ([CustomerId])
 );
@@ -92,10 +92,10 @@ CREATE TABLE [dbo].[Rentals] (
 CREATE TABLE [dbo].[Payments] (
     [PaymentId]      INT           IDENTITY (1, 1) NOT NULL,
     [RentalId]       INT           NOT NULL,
-    [NameSurname]    VARCHAR (255) NOT NULL,
-    [CardNo]         VARCHAR (255) NOT NULL,
-    [ExpirationDate] VARCHAR (255) NOT NULL,
-    [Cvc]            VARCHAR (255) NOT NULL,
+    [NameSurname]    VARCHAR (250) NOT NULL,
+    [CardNo]         VARCHAR (250) NOT NULL,
+    [ExpirationDate] VARCHAR (250) NOT NULL,
+    [Cvc]            VARCHAR (250) NOT NULL,
     [PaymentDate]    DATETIME      DEFAULT (getdate()) NULL,
     CONSTRAINT [PK_Payments] PRIMARY KEY CLUSTERED ([PaymentId] ASC),
     FOREIGN KEY ([RentalId]) REFERENCES [dbo].[Rentals] ([RentalId])
