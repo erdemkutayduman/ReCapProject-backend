@@ -7,85 +7,123 @@ using System.Text;
 
 namespace Core.Utilities.Helpers
 {
-    public class FileHelper
-    {
-        public static string AddAsync(IFormFile file)
+        public static class FileHelper
         {
-            var result = newPath(file);
-            try
-            {
-                var sourcepath = Path.GetTempFileName();
-                if (file.Length > 0)
-                    using (var stream = new FileStream(sourcepath, FileMode.Create))
-                        file.CopyTo(stream);
 
-                File.Move(sourcepath, result.newPath);
+
+            public static string DefaultImagePath = Directory.GetCurrentDirectory() + @"\upload_images\no-image.jpg";
+            public static string UploadImagePath = Directory.GetCurrentDirectory() + @"\upload_images";
+
+
+            public static string CreatePath(IFormFile file)
+            {
+
+                FileInfo fileInfo = new FileInfo(file.FileName);
+
+                string path = Path.Combine(UploadImagePath);
+                string fileExtension = fileInfo.Extension;
+                string uniqueFilename = Guid.NewGuid().ToString() + fileExtension;
+                string result = $@"{path}\{uniqueFilename}";
+
+                return result;
+
             }
-            catch (Exception exception)
+
+
+            public static string AddFile(IFormFile file)
             {
 
-                return exception.Message;
-            }
+                string result;
 
-            return result.Path2;
-        }
-
-        public static string UpdateAsync(string sourcePath, IFormFile file)
-        {
-            var result = newPath(file);
-
-            try
-            {
-                //File.Copy(sourcePath,result);
-
-                if (sourcePath.Length > 0)
+                try
                 {
-                    using (var stream = new FileStream(result.newPath, FileMode.Create))
+                    if (file == null)
                     {
-                        file.CopyTo(stream);
+                        result = DefaultImagePath;
+
+                        return result;
+                    }
+                    else
+                    {
+                        result = CreatePath(file);
+
+                        var sourcePath = Path.GetTempFileName();
+
+                        using (var stream = new FileStream(sourcePath, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                        }
+
+                        File.Move(sourcePath, result);
+
+                        return result;
                     }
                 }
+                catch (Exception exception)
+                {
+                    return exception.Message;
+                }
 
-                File.Delete(sourcePath);
             }
-            catch (Exception excepiton)
+
+
+            public static string DeleteFile(string imagePath)
             {
-                return excepiton.Message;
+
+                try
+                {
+                    File.Delete(imagePath);
+
+                    return "Deleted";
+                }
+                catch (Exception exception)
+                {
+                    return exception.Message;
+                }
+
             }
 
-            return result.Path2;
-        }
 
-        public static IResult DeleteAsync(string path)
-        {
-            try
+            public static string UpdateFile(IFormFile file, string oldImagePath)
             {
-                File.Delete(path);
+
+                string result;
+
+                try
+                {
+                    if (file == null)
+                    {
+                        File.Delete(oldImagePath);
+
+                        result = DefaultImagePath;
+
+                        return result;
+                    }
+                    else
+                    {
+                        result = CreatePath(file);
+
+                        var sourcePath = Path.GetTempFileName();
+
+                        using (var stream = new FileStream(sourcePath, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                        }
+
+                        File.Move(sourcePath, result);
+
+                        File.Delete(oldImagePath);
+
+                        return result;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    return exception.Message;
+                }
+
             }
-            catch (Exception exception)
-            {
-                return new ErrorResult(exception.Message);
-            }
 
-            return new SuccessResult();
+
         }
-
-        public static (string newPath, string Path2) newPath(IFormFile file)
-        {
-            FileInfo ff = new FileInfo(file.FileName);
-            string fileExtension = ff.Extension;
-
-            var creatingUniqueFilename = Guid.NewGuid().ToString("N")
-               + "_" + DateTime.Now.Month + "_"
-               + DateTime.Now.Day + "_"
-               + DateTime.Now.Year + fileExtension;
-
-
-            string path = Environment.CurrentDirectory + @"\wwwroot\Images";
-
-            string result = $@"{path}\{creatingUniqueFilename}";
-
-            return (result, $"\\Images\\{creatingUniqueFilename}");
-        }
-    }
 }

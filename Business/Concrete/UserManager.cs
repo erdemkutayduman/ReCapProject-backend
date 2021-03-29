@@ -24,9 +24,9 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
-        public List<OperationClaim> GetClaims(User user)
+        public IDataResult<List<OperationClaim>> GetClaims(User user)
         {
-            return _userDal.GetClaims(user);
+            return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
         }
 
         //[CacheAspect]
@@ -48,29 +48,54 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id));
         }
 
-        ////[ValidationAspect(typeof(UserValidator))]
-        //public IResult IBaseService<User> Add(User entity)
-        //{
-        //    _userDal.Add(entity);
-        //    return new SuccessResult(Messages.UserAdded);
-        //}
-
         public IResult Delete(User entity)
         {
             _userDal.Delete(entity);
             return new SuccessResult(Messages.UserDeleted);
         }
 
+        [ValidationAspect(typeof(UserValidator))]
+        [CacheRemoveAspect("IUserService.Get")]
         public IResult Update(User entity)
         {
             _userDal.Update(entity);
             return new SuccessResult(Messages.UserUpdated);
         }
 
+        [CacheRemoveAspect("IUserService.Get")]
         public IResult Add(User entity)
         {
             _userDal.Add(entity);
             return new SuccessResult(Messages.UserAdded);
+        }
+
+        [ValidationAspect(typeof(UserValidator))]
+        [CacheRemoveAspect("IUserService.Get")]
+        public IResult UpdateSpecificDetails(User user)
+        {
+            User userInfos = GetById(user.Id).Data;
+
+            userInfos.FirstName = user.FirstName;
+            userInfos.LastName = user.LastName;
+            userInfos.Email = user.Email;
+
+            _userDal.Update(userInfos);
+
+            return new SuccessResult(Messages.UserUpdated);
+        }
+
+        public IDataResult<User> GetByEmail(string email)
+        {
+            User user = _userDal.Get(u => u.Email.ToLower() == email.ToLower());
+
+            if (user == null)
+            {
+                return new ErrorDataResult<User>(Messages.UserNotFound);
+            }
+            else
+            {
+                return new SuccessDataResult<User>(user, Messages.UsersListed);
+            }
         }
     }
 }

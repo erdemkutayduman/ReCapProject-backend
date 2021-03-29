@@ -18,6 +18,8 @@ namespace WebAPI.Controllers
         {
             _rentalService = rentalService;
         }
+
+
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
@@ -28,6 +30,8 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+
+
         [HttpGet("getbyid")]
         public IActionResult GetById(int id)
         {
@@ -38,6 +42,8 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+
+
         [HttpPost("add")]
         public IActionResult Add(Rental rental)
         {
@@ -48,6 +54,8 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+
+
         [HttpPost("delete")]
         public IActionResult Delete(Rental rental)
         {
@@ -58,6 +66,8 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+
+
         [HttpPost("update")]
         public IActionResult Update(Rental rental)
         {
@@ -68,6 +78,7 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+
 
         [HttpGet("getrentaldetails")]
         public IActionResult GetByRentalDetail()
@@ -80,7 +91,21 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        
-        
+
+        [HttpGet("getidbyrentaldetails")]
+        public IActionResult GetIdByRentalInfos(int carId, int customerId, DateTime rentDate, DateTime returnDate)
+        {
+            var result = _rentalService.GetIdByRentalDetails(carId, customerId, rentDate, returnDate);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
     }
 }

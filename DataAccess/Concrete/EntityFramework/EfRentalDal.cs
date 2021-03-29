@@ -35,5 +35,22 @@ namespace DataAccess.Concrete.EntityFramework
                 return result.ToList();
             }
         }
+
+        public CarCreditScoreDto GetCreditScores(int carId, int customerId)
+        {
+            using (EfContext context = new EfContext())
+            {
+                var result = from c in context.CreditScores.Where(c => c.CarId == carId)
+                             from cu in context.Customers.Where(cu => cu.CustomerId == customerId)
+                             select new CarCreditScoreDto
+                             {
+                                 CarMinCarCreditScore = c.MinCreditScore,
+                                 CustomerCarCreditScore = cu.CreditScore,
+                             };
+
+                return result.SingleOrDefault();
+            };
+        }
+
     }
 }

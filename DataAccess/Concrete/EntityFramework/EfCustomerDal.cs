@@ -4,15 +4,34 @@ using Entities.Concrete;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework
 {
     public class EfCustomerDal : EfEntityRepositoryBase<Customer, EfContext>, ICustomerDal
     {
-        public List<CustomerDetailDto> GetCustomerDetail()
+        public List<CustomerDetailDto> GetCustomerDetails()
         {
-            throw new NotImplementedException();
+            using (EfContext context = new EfContext())
+            {
+                var result = from user in context.Users
+                             join customer in context.Customers
+                             on user.Id equals customer.UserId
+                             select new CustomerDetailDto
+                             {
+                                 UserId = user.Id,
+                                 CompanyName = customer.CustomerName,
+                                 FirstName = user.FirstName,
+                                 LastName = user.LastName,
+                                 Email = user.Email,
+                                 Status = user.Status
+                             };
+
+                return result.ToList();
+            }
         }
+
     }
 }

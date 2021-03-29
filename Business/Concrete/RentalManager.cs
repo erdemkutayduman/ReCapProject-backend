@@ -31,15 +31,14 @@ namespace Business.Concrete
         public IResult Add(Rental rental)
         {
 
-            IResult results = BusinessRules.Run(CheckIfCarInUse(rental.CarId),
-                                                CheckIfCarReturned(rental.CarId),
-                                                CheckIfDelete(rental.CarId),
-                                                CheckIfDeliver(rental.CarId));
+            IResult results = BusinessRules.Run(CarAvailabilityCheck(rental),
+                                                FindeksScoreAvailabilityCheck(rental));
 
             if (results != null)
             {
                 return results;
             }
+
             _rentalDal.Add(rental);
             return new SuccessResult(Messages.RentalAdded);
         }
@@ -87,7 +86,16 @@ namespace Business.Concrete
             return new SuccessResult(Messages.RentalAdded);
         }
 
-        
+        [CacheAspect]
+        [PerformanceAspect(5)]
+        public IDataResult<Rental> GetIdByRentalDetails(int carId, int customerId, DateTime rentDate, DateTime returnDate)
+        {
+            return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.CarId == carId
+                                                                && r.CustomerId == customerId
+                                                                && r.RentDate == rentDate
+                                                                && r.ReturnDate == returnDate));
+        }
+
         public IResult UpdateReturnDate(int carId)
         {
             var result = _rentalDal.GetAll(p => p.CarId == carId);
@@ -101,56 +109,39 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        private IResult CheckIfCarInUse(int carId)
-        {
-            var result = _rentalDal.Get(p => p.CarId == carId && p.ReturnDate == null);
-            if (result != null)
-            {
-                return new ErrorResult(Messages.RentalBusy);
-            }
-            return new SuccessResult();
 
-        }
+        //Business Rules
 
-        private IResult CheckIfDelete(int Id)
-        {
-            var result = _rentalDal.Get(p => p.Id == Id);
-            if (result == null)
-            {
-                return new ErrorResult(Messages.RentalRecordsInvalid);
-            }
-            if (result.ReturnDate == null)
-            {
-                return new ErrorResult(Messages.RentalBusy);
-            }
-            return new SuccessResult();
-        }
 
-        private IResult CheckIfDeliver(int Id)
+        private IResult CarAvailabilityCheck(Rental rental)
         {
-            var result = _rentalDal.Get(p => p.Id == Id);
-            if (result.ReturnDate != null)
-            {
-                return new ErrorResult(Messages.RentalRecordsInvalid);
-            }
-            result.ReturnDate = DateTime.Now.Date;
-            Update(result);
-            return new SuccessResult();
-        }
+            var overlappingDateList = _rentalDal.GetRentalDetails(r => r.CarId == rental.CarId
+                                                                  && r.RentDate < rental.ReturnDate
+                                                                  && r.ReturnDate > rental.RentDate);
 
-        public IResult CheckIfCarReturned(int carId)
-        {
-            var resultList = _rentalDal.GetAll(r => r.CarId == carId).ToList();
-            if (resultList.Count == 0)
+            if (overlappingDateList.Count() == 0)
             {
                 return new SuccessResult();
             }
-            var result = resultList.Last().ReturnDate != null ? true : false;
-            if (result)
+            else
+            {
+                return new ErrorResult(Messages.RentalBusy);
+            }
+        }
+
+        private IResult FindeksScoreAvailabilityCheck(Rental rental)
+        {
+            var result = _rentalDal.GetCreditScores(rental.CarId, rental.CustomerId);
+
+            if (result.CarMinCarCreditScore <= result.CustomerCarCreditScore)
             {
                 return new SuccessResult();
             }
-            return new ErrorResult(Messages.RentalBusy);
+            else
+            {
+                return new ErrorResult(Messages.FindeksScoreIsNotEnough);
+            }
         }
+
     }
 }

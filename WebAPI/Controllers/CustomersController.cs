@@ -18,6 +18,8 @@ namespace WebAPI.Controllers
         {
             _customerService = customerService;
         }
+
+
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
@@ -26,8 +28,10 @@ namespace WebAPI.Controllers
             {
                 return Ok(result); 
             }
-            return BadRequest();
+            return BadRequest(result);
         }
+
+
         [HttpGet("getbyid")]
         public IActionResult GetById(int id)
         {
@@ -36,8 +40,10 @@ namespace WebAPI.Controllers
             {
                 return Ok(result);
             }
-            return BadRequest();
+            return BadRequest(result);
         }
+
+
         [HttpPost("add")]
         public IActionResult Add(Customer customer)
         {
@@ -46,8 +52,10 @@ namespace WebAPI.Controllers
             {
                 return Ok(result); 
             }
-            return BadRequest();
+            return BadRequest(result);
         }
+
+
         [HttpPost("delete")]
         public IActionResult Delete(Customer customer)
         {
@@ -56,8 +64,10 @@ namespace WebAPI.Controllers
             { 
                 return Ok(result);
             }
-            return BadRequest();
+            return BadRequest(result);
         }
+
+
         [HttpPost("update")]
         public IActionResult Update(Customer customer)
         {
@@ -66,7 +76,19 @@ namespace WebAPI.Controllers
             { 
                 return Ok(result); 
             }
-            return BadRequest();
+            return BadRequest(result);
+        }
+
+        [HttpGet("getcustomerdetails")]
+        public IActionResult GetByEmail(string email)
+        {
+            var result = _customerService.GetCustomerDetails();
+            if (result.Success)
+            {
+                return Ok(result);
+            }          
+            return BadRequest(result);
+            
         }
     }
 }

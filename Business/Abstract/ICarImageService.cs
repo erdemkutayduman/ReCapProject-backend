@@ -8,11 +8,12 @@ using System.Text;
 
 namespace Business.Abstract
 {
-    public interface ICarImageService : IBaseService<CarImage>
+    public interface ICarImageService
     {
-        IDataResult<CarImage> Get(int id);
-        IDataResult<List<CarImage>> GetImagesByCarId(int id);
-        IDataResult<List<CarImage>> GetAllByCarId(int carId);
-
+        IResult Add(CarImage carImage, IFormFile file);
+        IResult Delete(CarImage carImage);
+        IResult Update(CarImage carImage, IFormFile file);
+        IDataResult<List<CarImage>> GetAll();
+        IDataResult<CarImage> GetById(int colorId);
     }
 }

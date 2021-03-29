@@ -19,6 +19,19 @@ namespace Business.Constants
         public static string CarNameInvalid = "The car you want to add already exist.";
         public static string CarsListed = "Cars Listed";
 
+        public static string CardAdded = "Card is Added";
+        public static string CardDeleted = "Card is Deleted";
+        public static string CardUpdated = "Card is Updated";
+        public static string CardInvalid = "The card is Invalid!";
+        public static string CardsListed = "Cards Listed";
+        public static string CardExists = "Card is already Exist";
+
+        public static string CreditScoreAdded = "CreditScore is Added";
+        public static string CreditScoreDeleted = "CreditScore is Deleted";
+        public static string CreditScoreUpdated = "CreditScore is Updated";
+        public static string CreditScoreInvalid = "The CreditScore is invalid!";
+        public static string CreditScoresListed = "CreditScore Listed";
+
         public static string CarImageAdded = "Car Image is Added";
         public static string CarImageDeleted = "Car Image is Deleted";
         public static string CarImageUpdated = "Car Image is Updated";
@@ -60,6 +73,7 @@ namespace Business.Constants
         public static string UserRegistered = "Registered";
         public static string UserNotFound = "User not found.";
         public static string PasswordError = "Wrong Password!";
+        public static string PasswordUpdated = "Password Updated!";
         public static string SuccessfulLogin = "Login Successful!";
         public static string UserAlreadyExists = "User Already Exists.";
         public static string AccessTokenCreated = "Token Created.";
@@ -69,5 +83,9 @@ namespace Business.Constants
         public static string PaymentDeleted = "Payment is Deleted";
         public static string PaymentInvalid = "The Payment you want to add already exist.";
         public static string PaymentsListed = "Payments Listed";
+
+        public static string FindeksScoreIsNotEnough = "Findeks Score is not enough!";
+
+        
     }
 }

@@ -8,8 +8,10 @@ using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Business.Concrete
@@ -17,10 +19,11 @@ namespace Business.Concrete
     public class CustomerManager : ICustomerService
     {
         ICustomerDal _customerDal;
+        
 
         public CustomerManager(ICustomerDal customerDal)
         {
-            _customerDal = customerDal;
+            _customerDal = customerDal;      
 
         }
 
@@ -59,6 +62,13 @@ namespace Business.Concrete
         {
             _customerDal.Update(customer);
             return new SuccessResult(Messages.CustomerUpdated);
+        }
+
+        [CacheAspect]
+        [PerformanceAspect(5)]
+        public IDataResult<List<CustomerDetailDto>> GetCustomerDetails()
+        {
+            return new SuccessDataResult<List<CustomerDetailDto>>(_customerDal.GetCustomerDetails(), "");
         }
     }
 }
