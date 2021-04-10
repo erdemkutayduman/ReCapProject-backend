@@ -42,14 +42,15 @@ namespace Business.Concrete
             }
 
             carImage.ImageDate = DateTime.Now;
-            carImage.ImagePath = FileHelper.AddFile(file);
+            //carImage.ImagePath = FileHelper.AddFile(file);
+            carImage.ImagePath = new FileHelper().Add(file, CreateNewPath(file));
 
             _carImageDal.Add(carImage);
 
             return new SuccessResult(Messages.CarImageAdded);
         }
 
-        [SecuredOperation("admin,carimage.delete")]
+        //[SecuredOperation("admin,carimage.delete")]
         [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Delete(CarImage carImage)
         {
@@ -68,7 +69,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("admin,carimage.update")]
+        //[SecuredOperation("admin,carimage.update")]
         [ValidationAspect(typeof(CarImageValidator))]
         [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Update(CarImage carImage, IFormFile file)
@@ -81,7 +82,8 @@ namespace Business.Concrete
             }
 
             carImage.ImageDate = DateTime.Now;
-            carImage.ImagePath = FileHelper.UpdateFile(file, oldImage.ImagePath);
+            //carImage.ImagePath = FileHelper.UpdateFile(file, oldImage.ImagePath);
+            carImage.ImagePath = new FileHelper().Update(oldImage.ImagePath, file, CreateNewPath(file));
 
             _carImageDal.Update(carImage);
 
@@ -93,9 +95,23 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(), Messages.CarImagesListed);
         }
-        
+
+        [CacheAspect]
+        public IDataResult<List<CarImage>> GetImagesByCarId(int carId)
+        {
+            var result = _carImageDal.GetAll(c => c.CarId == carId);
+
+            IfCarImageOfCarNotExistsAddDefault(ref result);
+
+            return new SuccessDataResult<List<CarImage>>(result);
+        }
+
         public IDataResult<CarImage> GetById(int id)
         {
+            var result = _carImageDal.Get(c => c.CarImageId == id);
+
+            IfCarImageOfCarNotExistsAddDefault(ref result);
+
             return new SuccessDataResult<CarImage>(_carImageDal.Get(p => p.CarImageId == id));
         }
 
@@ -110,6 +126,39 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        private void IfCarImageOfCarNotExistsAddDefault(ref List<CarImage> result)
+        {
+            if (!result.Any()) result.Add(CreateDefaultCarImage());
+        }
+
+        private void IfCarImageOfCarNotExistsAddDefault(ref CarImage result)
+        {
+            if (result == null) result = CreateDefaultCarImage();
+        }
+
+        private CarImage CreateDefaultCarImage()
+        {
+            var defaultCarImage = new CarImage
+            {
+                ImagePath = $@"{Environment.CurrentDirectory}\wwwroot\Uploads\34c3aade-ecae-4c3d-9708-8fc1ad2a0711_2_28_2021.jpg",
+                ImageDate = DateTime.Now
+            };
+
+            return defaultCarImage;
+        }
+
+      
+        private string CreateNewPath(IFormFile file)
+        {
+            var fileInfo = new FileInfo(file.FileName);
+            var newPath =
+                $@"{Environment.CurrentDirectory}\Public\Images\CarImage\Upload\{Guid.NewGuid()}_{DateTime.Now.Month}_{DateTime.Now.Day}_{DateTime.Now.Year}{fileInfo.Extension}";
+
+            return newPath;
+        }
+
+   
 
     }
 }
+

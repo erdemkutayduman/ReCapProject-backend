@@ -47,6 +47,14 @@ namespace Business.Concrete
             return new SuccessDataResult<Payment>(_paymentDal.Get(p => p.PaymentId == id));
         }
 
+        public IResult Payment()
+        {
+            var rd = new Random().Next(2);
+            if (rd == 0) return new ErrorResult(Messages.PaymentInvalid);
+
+            return new SuccessResult(Messages.PaymentSuccessful);
+        }
+
         public IResult Update(Payment entity)
         {
             _paymentDal.Update(entity);

@@ -28,7 +28,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  CarName = v.CarName,
                                  UserName = u.FirstName,                                 
                                  CustomerName = c.CustomerName,                                 
-                                 RentDate = r.RentDate,
+                                 RentStartDate = r.RentStartDate,
+                                 RentEndDate = r.RentEndDate,
                                  ReturnDate = r.ReturnDate,
                                                                  
                              };
@@ -36,16 +37,16 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
-        public CarCreditScoreDto GetCreditScores(int carId, int customerId)
+        public CreditScoreDto GetCreditScores(int carId, int customerId)
         {
             using (EfContext context = new EfContext())
             {
-                var result = from c in context.CreditScores.Where(c => c.CarId == carId)
+                var result = from c in context.CreditScores.Where(c => c.CustomerId == carId)
                              from cu in context.Customers.Where(cu => cu.CustomerId == customerId)
-                             select new CarCreditScoreDto
+                             select new CreditScoreDto
                              {
-                                 CarMinCarCreditScore = c.MinCreditScore,
-                                 CustomerCarCreditScore = cu.CreditScore,
+                                 MinCreditScore = c.MinCreditScore,
+                                 CustomerCreditScore = cu.CreditScore,
                              };
 
                 return result.SingleOrDefault();

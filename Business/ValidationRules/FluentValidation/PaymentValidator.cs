@@ -12,7 +12,7 @@ namespace Business.ValidationRules.FluentValidation
         {
             RuleFor(p => p.NameSurname).NotEmpty();
             RuleFor(p => p.CardNumber).NotEmpty();
-            RuleFor(p => p.ExpirationDate).NotEmpty();
+            RuleFor(p => p.ExpirationMonth).NotEmpty();
             RuleFor(p => p.Cvc).NotEmpty();
         }
     }

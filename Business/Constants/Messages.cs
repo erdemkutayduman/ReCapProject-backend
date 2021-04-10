@@ -31,6 +31,7 @@ namespace Business.Constants
         public static string CreditScoreUpdated = "CreditScore is Updated";
         public static string CreditScoreInvalid = "The CreditScore is invalid!";
         public static string CreditScoresListed = "CreditScore Listed";
+        public static string CreditScoreIsNotEnough = "Credit Score is not enough!";
 
         public static string CarImageAdded = "Car Image is Added";
         public static string CarImageDeleted = "Car Image is Deleted";
@@ -78,14 +79,15 @@ namespace Business.Constants
         public static string UserAlreadyExists = "User Already Exists.";
         public static string AccessTokenCreated = "Token Created.";
 
-        public static string PaymentAdded = "Payment completed successfully.";
+        public static string PaymentAdded = "Payment Added Successfully.";
         public static string PaymentUpdated = "Payment is Updated";
         public static string PaymentDeleted = "Payment is Deleted";
         public static string PaymentInvalid = "The Payment you want to add already exist.";
         public static string PaymentsListed = "Payments Listed";
+        public static string PaymentSuccessful = "Payment Completed Successfully.";
 
-        public static string FindeksScoreIsNotEnough = "Findeks Score is not enough!";
 
-        
+
+
     }
 }

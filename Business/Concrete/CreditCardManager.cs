@@ -29,7 +29,7 @@ namespace Business.Concrete
         [CacheRemoveAspect("ICreditCardService.Get")]
         public IResult Add(CreditCard creditCard)
         {
-            var result = BusinessRules.Run(CheckCardIsExists(creditCard.UserId, creditCard.CardNumber));
+            var result = BusinessRules.Run(CheckCardIsExists(creditCard.CustomerId, creditCard.CardNumber));
 
             if (result != null)
             {
@@ -64,7 +64,7 @@ namespace Business.Concrete
 
         IDataResult<CreditCard> IBaseService<CreditCard>.GetById(int id)
         {
-            return new SuccessDataResult<CreditCard>(_creditCardDal.Get(c => c.UserId == id));
+            return new SuccessDataResult<CreditCard>(_creditCardDal.Get(c => c.CreditCardId == id));
         }
 
         public IDataResult<List<CreditCard>> GetAll()
@@ -73,14 +73,12 @@ namespace Business.Concrete
         }
 
 
-        //[CacheAspect]
-        //[PerformanceAspect(5)]
-
+        
         // Business Rules Methods
         private IResult CheckCardIsExists(int userId, string cardNumber)
         {
             var result = _creditCardDal.Get(c => c.CardNumber == cardNumber
-                                            && c.UserId == userId);
+                                            && c.CustomerId == userId);
 
             if (result != null)
             {

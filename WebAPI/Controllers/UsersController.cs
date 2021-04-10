@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Core.Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -103,10 +104,10 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpPost("updateinfos")]
-        public IActionResult UpdateSpecificInfos(User user)
+        [HttpPost("updateuserdetails")]
+        public IActionResult UpdateUserDetails(User user)
         {
-            var result = _userService.UpdateSpecificDetails(user);
+            var result = _userService.UpdateUserDetails(user);
 
             if (result.Success)
             {

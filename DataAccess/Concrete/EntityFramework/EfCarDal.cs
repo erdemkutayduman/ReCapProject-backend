@@ -27,6 +27,7 @@ namespace DataAccess.Concrete.EntityFramework
                                  DailyPrice = c.DailyPrice,
                                  ModelYear = c.ModelYear,
                                  Description = c.Description,
+                                 MinCreditScore = c.MinCreditScore,
                                  ImagePaths = (from img in context.CarImages
                                                where img.CarId == c.CarId
                                                select new CarImage

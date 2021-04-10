@@ -99,6 +99,15 @@ namespace WebAPI.Controllers
             }
         }
 
+        [HttpGet("payment")]
+        public IActionResult Payment()
+        {
+            var result = _paymentService.Payment();
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+
 
     }
 }

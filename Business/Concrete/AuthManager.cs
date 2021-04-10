@@ -1,12 +1,15 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
+using Entities.Concrete;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Business.Concrete
@@ -15,31 +18,23 @@ namespace Business.Concrete
     {
         IUserService _userService;
         ITokenHelper _tokenHelper;
+        
+
 
         public AuthManager(IUserService userService, ITokenHelper tokenHelper)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
+            
         }
 
-        public IDataResult<User> Register(UserForRegisterDto userForRegisterDto)
+        public IDataResult<AccessToken> CreateAccessToken(User user)
         {
-            HashingHelper.CreatePasswordHash(userForRegisterDto.Password,
-                                             out byte[] passwordHash,
-                                             out byte[] passwordSalt);
-            var user = new User
-            {
-                Email = userForRegisterDto.Email,
-                FirstName = userForRegisterDto.FirstName,
-                LastName = userForRegisterDto.LastName,
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt,
-                Status = true
-            };
+            var claims = _userService.GetClaims(user);
 
-            _userService.Add(user);
+            var accessToken = _tokenHelper.CreateToken(user, claims.Data);
 
-            return new SuccessDataResult<User>(user, Messages.UserRegistered);
+            return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
         }
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
@@ -60,6 +55,27 @@ namespace Business.Concrete
 
             return new SuccessDataResult<User>(userToCheck.Data, Messages.SuccessfulLogin);
         }
+       
+
+        public IDataResult<User> Register(UserForRegisterDto userForRegisterDto)
+        {
+            HashingHelper.CreatePasswordHash(userForRegisterDto.Password,
+                                             out byte[] passwordHash,
+                                             out byte[] passwordSalt);
+            var user = new User
+            {
+                Email = userForRegisterDto.Email,
+                FirstName = userForRegisterDto.FirstName,
+                LastName = userForRegisterDto.LastName,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Status = true
+            };
+
+            _userService.Add(user);
+
+            return new SuccessDataResult<User>(user, Messages.UserRegistered);
+        }    
 
         public IResult UserExists(string email)
         {
@@ -70,34 +86,21 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        public IDataResult<AccessToken> CreateAccessToken(User user)
-        {
-            var claims = _userService.GetClaims(user);
-            var accessToken = _tokenHelper.CreateToken(user, claims.Data);
-            return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
-        }
 
-        public IResult ChangePassword(UserForPasswordDto userForPasswordDto)
+        public IResult IsAuthenticated(string userEmail, List<string> requiredRoles)
         {
-            User userInfos = _userService.GetById(userForPasswordDto.Id).Data;
-
-            if (!HashingHelper.VerifyPasswordHash(userForPasswordDto.CurrentPassword,
-                                                  userInfos.PasswordHash,
-                                                  userInfos.PasswordSalt))
+            if (requiredRoles != null)
             {
-                return new ErrorResult(Messages.PasswordError);
+                var user = _userService.GetByEmail(userEmail).Data;
+                var userClaims = _userService.GetClaims(user).Data;
+                var doesUserHaveRequiredRoles =
+                    requiredRoles.All(role => userClaims.Select(userClaim => userClaim.Name).Contains(role));
+                if (!doesUserHaveRequiredRoles) return new ErrorResult(Messages.AuthorizationDenied);
             }
 
-            HashingHelper.CreatePasswordHash(userForPasswordDto.NewPassword,
-                                             out byte[] passwordHash,
-                                             out byte[] passwordSalt);
-
-            userInfos.PasswordHash = passwordHash;
-            userInfos.PasswordSalt = passwordSalt;
-
-            _userService.Update(userInfos);
-
-            return new SuccessResult(Messages.PasswordUpdated);
+            return new SuccessResult();
         }
+
+
     }
 }

@@ -8,6 +8,6 @@ namespace Business.Abstract
 {
     public interface IPaymentService : IBaseService<Payment>
     {
-        
+        IResult Payment();
     }
 }

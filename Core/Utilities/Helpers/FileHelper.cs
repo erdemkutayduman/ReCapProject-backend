@@ -7,12 +7,12 @@ using System.Text;
 
 namespace Core.Utilities.Helpers
 {
-        public static class FileHelper
+        public class FileHelper : IFileHelper
         {
 
 
-            public static string DefaultImagePath = Directory.GetCurrentDirectory() + @"\upload_images\no-image.jpg";
-            public static string UploadImagePath = Directory.GetCurrentDirectory() + @"\upload_images";
+            public static string DefaultImagePath = Directory.GetCurrentDirectory() + @"\wwwroot\Uploads\34c3aade-ecae-4c3d-9708-8fc1ad2a0711_2_28_2021.jpg";
+            public static string UploadImagePath = Directory.GetCurrentDirectory() + @"\wwwroot\Uploads\";
 
 
             public static string CreatePath(IFormFile file)
@@ -124,6 +124,36 @@ namespace Core.Utilities.Helpers
 
             }
 
+        public string Add(IFormFile file, string path)
+        {
+            var sourcepath = Path.GetTempFileName();
 
+            if (file.Length > 0)
+                using (var stream = new FileStream(sourcepath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+
+            File.Move(sourcepath, path);
+            return path;
         }
+
+        public string Update(string pathToUpdate, IFormFile file, string path)
+        {
+            if (path.Length > 0)
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+
+            File.Delete(pathToUpdate);
+            return path;
+        }
+
+        public void Delete(string path)
+        {
+            if (File.Exists(path))
+                File.Delete(path);
+        }
+    }
 }

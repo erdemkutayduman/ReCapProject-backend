@@ -14,7 +14,6 @@ namespace WebAPI.Controllers
     public class AuthController : ControllerBase
     {
 
-
         private readonly IAuthService _authService;
 
 
@@ -71,17 +70,17 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpPost("changepassword")]
-        public IActionResult ChangePassword(UserForPasswordDto userForPasswordDto)
+        [HttpGet("isauthenticated")]
+        public ActionResult IsAuthenticated(string userMail, string requiredRoles)
         {
-            var result = _authService.ChangePassword(userForPasswordDto);
+            var requiredRolesList = !string.IsNullOrEmpty(requiredRoles)
+                ? requiredRoles.Split(',').ToList()
+                : null;
 
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = _authService.IsAuthenticated(userMail, requiredRolesList);
+            if (result.Success) return Ok(result);
 
-            return BadRequest(result);
+            return Unauthorized(result.Message);
         }
 
 

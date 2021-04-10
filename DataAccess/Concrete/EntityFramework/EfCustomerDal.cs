@@ -26,12 +26,12 @@ namespace DataAccess.Concrete.EntityFramework
                                  FirstName = user.FirstName,
                                  LastName = user.LastName,
                                  Email = user.Email,
-                                 Status = user.Status
+                                 Status = user.Status,
+                                 CreditScore = customer.CreditScore
                              };
 
                 return result.ToList();
             }
         }
-
     }
 }

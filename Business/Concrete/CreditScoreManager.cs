@@ -19,8 +19,17 @@ namespace Business.Concrete
         }
         public IResult Add(CreditScore entity)
         {
-            _creditScoreDal.Add(entity);
+            var newCredit = CalculateCreditScore(entity).Data;
+            _creditScoreDal.Add(newCredit);
+
             return new SuccessResult(Messages.CreditScoreAdded);
+        }
+
+        public IDataResult<CreditScore> CalculateCreditScore(CreditScore creditScore)
+        {
+            creditScore.MinCreditScore = new Random().Next(0, 1901);
+
+            return new SuccessDataResult<CreditScore>(creditScore);
         }
 
         public IResult Delete(CreditScore entity)
@@ -41,7 +50,9 @@ namespace Business.Concrete
 
         public IResult Update(CreditScore entity)
         {
-            _creditScoreDal.Update(entity);
+            var newCredit = CalculateCreditScore(entity).Data;
+            _creditScoreDal.Update(newCredit);
+
             return new SuccessResult(Messages.CreditScoreUpdated);
         }
     }

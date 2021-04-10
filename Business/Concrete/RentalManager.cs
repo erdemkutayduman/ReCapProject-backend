@@ -20,9 +20,15 @@ namespace Business.Concrete
 {
     public class RentalManager : IRentalService
     {
+        ICarService _carService;
+        ICreditScoreService _creditScoreService;
         IRentalDal _rentalDal;
-        public RentalManager(IRentalDal rentalDal)
+
+
+        public RentalManager(IRentalDal rentalDal, ICarService carService, ICreditScoreService creditScoreService)
         {
+            _carService = carService;
+            _creditScoreService = creditScoreService;
             _rentalDal = rentalDal;
         }
 
@@ -32,7 +38,7 @@ namespace Business.Concrete
         {
 
             IResult results = BusinessRules.Run(CarAvailabilityCheck(rental),
-                                                FindeksScoreAvailabilityCheck(rental));
+                                                CheckCreditScoreSufficiency(rental));
 
             if (results != null)
             {
@@ -88,12 +94,13 @@ namespace Business.Concrete
 
         [CacheAspect]
         [PerformanceAspect(5)]
-        public IDataResult<Rental> GetIdByRentalDetails(int carId, int customerId, DateTime rentDate, DateTime returnDate)
+        public IDataResult<Rental> GetIdByRentalDetails(int carId, int customerId, DateTime rentStartDate, DateTime rentEndDate, DateTime? ReturnDate)
         {
             return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.CarId == carId
                                                                 && r.CustomerId == customerId
-                                                                && r.RentDate == rentDate
-                                                                && r.ReturnDate == returnDate));
+                                                                && r.RentStartDate == rentStartDate
+                                                                && r.RentEndDate == rentEndDate
+                                                                && r.ReturnDate == ReturnDate));
         }
 
         public IResult UpdateReturnDate(int carId)
@@ -109,15 +116,15 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-
+       
         //Business Rules
 
 
         private IResult CarAvailabilityCheck(Rental rental)
         {
             var overlappingDateList = _rentalDal.GetRentalDetails(r => r.CarId == rental.CarId
-                                                                  && r.RentDate < rental.ReturnDate
-                                                                  && r.ReturnDate > rental.RentDate);
+                                                                  && r.RentStartDate < rental.RentEndDate
+                                                                  && r.ReturnDate > rental.RentStartDate);
 
             if (overlappingDateList.Count() == 0)
             {
@@ -129,19 +136,17 @@ namespace Business.Concrete
             }
         }
 
-        private IResult FindeksScoreAvailabilityCheck(Rental rental)
+        private IResult CheckCreditScoreSufficiency(Rental rental)
         {
-            var result = _rentalDal.GetCreditScores(rental.CarId, rental.CustomerId);
+            var car = _carService.GetById(rental.CarId).Data;
+            var credit = _creditScoreService.GetById(rental.CustomerId).Data;
 
-            if (result.CarMinCarCreditScore <= result.CustomerCarCreditScore)
-            {
-                return new SuccessResult();
-            }
-            else
-            {
-                return new ErrorResult(Messages.FindeksScoreIsNotEnough);
-            }
+            if (credit == null) return new ErrorResult(Messages.CreditScoreInvalid);
+            if (credit.MinCreditScore < car.MinCreditScore) return new ErrorResult(Messages.CreditScoreIsNotEnough);
+
+            return new SuccessResult();
         }
 
+        
     }
 }

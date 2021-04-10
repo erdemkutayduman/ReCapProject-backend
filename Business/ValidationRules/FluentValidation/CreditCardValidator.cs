@@ -10,11 +10,12 @@ namespace Business.ValidationRules.FluentValidation
     {
         public CreditCardValidator()
         {
-            RuleFor(c => c.UserId).NotEmpty();
+            RuleFor(c => c.CustomerId).NotEmpty();
             RuleFor(c => c.NameSurname).NotEmpty();
             RuleFor(c => c.CardNumber).NotEmpty();
             RuleFor(c => c.Cvc).NotEmpty();
-            RuleFor(c => c.ExpirationDate).NotEmpty();
+            RuleFor(c => c.ExpirationMonth).NotEmpty();
+            RuleFor(c => c.ExpirationYear).NotEmpty();
         }
     }
 }

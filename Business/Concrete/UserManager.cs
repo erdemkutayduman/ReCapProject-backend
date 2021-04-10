@@ -7,8 +7,10 @@ using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
+using Core.Utilities.Security.Hashing;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,6 +23,7 @@ namespace Business.Concrete
 
         public UserManager(IUserDal userDal)
         {
+            
             _userDal = userDal;
         }
 
@@ -71,7 +74,7 @@ namespace Business.Concrete
 
         [ValidationAspect(typeof(UserValidator))]
         [CacheRemoveAspect("IUserService.Get")]
-        public IResult UpdateSpecificDetails(User user)
+        public IResult UpdateUserDetails(User user)
         {
             User userInfos = GetById(user.Id).Data;
 

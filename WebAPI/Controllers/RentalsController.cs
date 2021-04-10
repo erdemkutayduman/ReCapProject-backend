@@ -93,9 +93,9 @@ namespace WebAPI.Controllers
 
 
         [HttpGet("getidbyrentaldetails")]
-        public IActionResult GetIdByRentalInfos(int carId, int customerId, DateTime rentDate, DateTime returnDate)
+        public IActionResult GetIdByRentalDetails(int carId, int customerId, DateTime rentStartDate, DateTime rentEndDate, DateTime returnDate)
         {
-            var result = _rentalService.GetIdByRentalDetails(carId, customerId, rentDate, returnDate);
+            var result = _rentalService.GetIdByRentalDetails(carId, customerId, rentStartDate, rentEndDate, returnDate);
 
             if (result.Success)
             {
@@ -106,6 +106,8 @@ namespace WebAPI.Controllers
                 return BadRequest(result);
             }
         }
+
+        
 
     }
 }

@@ -31,7 +31,6 @@ namespace DataAccess.Concrete.EntityFramework
                                  Description = v.Description,
                                  ImagePath = c.ImagePath,
                                  ImageDate = c.ImageDate
-
                              };
 
                 return result.ToList();
